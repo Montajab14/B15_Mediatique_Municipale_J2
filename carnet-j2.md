@@ -51,13 +51,19 @@ Pour aller plus loin, avec l'agent, les demandes du formateur :
 |---|---|
 | Fonction tirée | compterMots |
 | Le rouge vu (message exact) | The requested module '../public/js/brain.js' does not provide an export named 'compterMots' |
-| Identifiant du commit `test:` |  |
-| Identifiant du commit `feat:` |  |
+| Identifiant du commit `test:` | test: compterMots, critères C1 à C5 |
+| Identifiant du commit `feat:` |  feat: compterMots  |
 | Casse volontaire : la ligne changée | return mots.length; remplacé par return 1; |
 | Casse volontaire : le test devenu rouge | C1 : compte les mots séparés par un espace |
 | Pour aller plus loin : la deuxième fonction | |
 
 Les critères C1 à C5 de votre fonction, recopiés de la fiche :
+
+- C1 : `'salut'` donne 1, `'où est le refuge'` donne 4.
+- C2 : `'un   deux'` donne 2, `'un\tdeux\ntrois'` donne 3.
+- C3 : `'   salut   '` donne 1.
+- C4 : `''` et les espaces seuls donnent 0.
+- C5 : ce qui n'est pas du texte donne 0, sans erreur.
 
 ## R4 · La revue de code
 
