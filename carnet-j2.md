@@ -72,7 +72,11 @@ Les critères C1 à C5 de votre fonction, recopiés de la fiche :
 | 2 | Refusé | tests/contrat/brain.contrat.test.js, lignes 69, 71 et 86 ; public/js/brain.js, ligne 38 | Le patch affaiblit le contrat (assertions sans espaces) pour cacher que normaliser() a perdu trim() : replyTo(' SALUT ') donne le repli, et le contrat d'origine a 2 rouges. |
 | 3 | Refusé | public/js/view.js, ligne 13 | createContextualFragment interprète le message comme du HTML : <b>gras</b> s'affiche en gras, et un <img onerror> exécute du code (injection). Le contrat navigateur « le texte reste du texte » est rouge. |
 
-Pour aller plus loin : le patch que vous avez corrigé, et ce que vous avez changé.
+Pour aller plus loin : j'ai corrigé le patch 2 dans mon-patch.patch. Il garde « au revoir » et normaliser(), mais normaliser() fait maintenant String(message).trim().toLowerCase(), et le contrat n'est plus modifié. Son test vérifie aussi les espaces autour. J'ai contrôlé trois choses :
+
+- sur une base neuve, on obtient 46 tests sur 46, avec le contrat d'origine ;
+- si on remet le défaut du patch 2, mon test rougit (2 rouges) ;
+- il ne touche que public/js/brain.js et tests/normaliser.test.js.
 
 ## Fin de journée
 
