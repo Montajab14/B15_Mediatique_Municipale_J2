@@ -1,0 +1,31 @@
+import { it } from 'node:test';
+import assert from 'node:assert/strict';
+import { compterMots } from '../public/js/brain.js';
+
+// Critères C1 à C5 de la fiche R3, fonction F2 : compterMots(message) compte les mots.
+
+it('C1 : compte les mots séparés par un espace', () => {
+  assert.equal(compterMots('salut'), 1);
+  assert.equal(compterMots('où est le refuge'), 4);
+});
+
+it('C2 : plusieurs espaces, une tabulation ou un retour à la ligne séparent aussi les mots', () => {
+  assert.equal(compterMots('un   deux'), 2);
+  assert.equal(compterMots('un\tdeux\ntrois'), 3);
+});
+
+it('C3 : les espaces autour ne comptent pas', () => {
+  assert.equal(compterMots('   salut   '), 1);
+});
+
+it('C4 : un message vide ou fait d’espaces compte 0 mot', () => {
+  assert.equal(compterMots(''), 0);
+  assert.equal(compterMots('   '), 0);
+});
+
+it('C5 : ce qui n’est pas du texte donne 0, sans erreur', () => {
+  for (const entree of [undefined, null, 42]) {
+    assert.doesNotThrow(() => compterMots(entree));
+    assert.equal(compterMots(entree), 0);
+  }
+});
