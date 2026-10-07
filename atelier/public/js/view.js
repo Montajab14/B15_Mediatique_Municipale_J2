@@ -2,10 +2,13 @@
 
 export function renderMessages(messages, container) {
   const lignes = messages.map((msg) => {
+    const nom = document.createElement('strong');
+    nom.textContent = msg.role === 'user' ? 'Vous' : 'Cap Web';
     const li = document.createElement('li');
-    const strong = document.createElement('strong');
-    strong.textContent = msg.role === 'user' ? 'Vous' : 'Cap Web';
-    li.append(strong, ` : ${msg.text}`);
+    li.append(nom, ` : ${msg.text}`);
+    // const strong = document.createElement('strong');
+    // strong.textContent = msg.role === 'user' ? 'Vous' : 'Cap Web';
+    // li.append(strong, ` : ${msg.text}`);
     if (msg.role === 'assistant') {
       li.classList.add('bot');
     }

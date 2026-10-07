@@ -6,7 +6,8 @@ export const LIMITE = 330;
 
 const MOTS = {
   prairie: 'La prairie de la madeleine est un site naturel remarquable.',
-  voisin: 'Le chemin des voisins est un lieu de promenade agréable.'
+  voisin: 'Le chemin des voisins est un lieu de promenade agréable.',
+  bibliotheque : 'La bibliothèque est ouverte tous les jours de 8h à 20h.',
 };
 
 const liste = Object.keys(MOTS).map((mot) => `« ${mot} »`).join(' et ');
