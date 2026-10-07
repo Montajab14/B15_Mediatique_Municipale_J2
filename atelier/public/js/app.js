@@ -1,4 +1,4 @@
-// Cap Web — câblage : lire le formulaire, mettre à jour l'historique, demander l'affichage.
+﻿// Cap Web - câblage : lire le formulaire, mettre à jour l'historique, demander l'affichage.
 import { validateMessage, replyTo, LIMITE } from './brain.js';
 import { renderMessages } from './view.js';
 
@@ -9,6 +9,7 @@ const statut = document.querySelector('#status');
 const effacer = document.querySelector('#effacer');
 const versionElt = document.querySelector('#version');
 const limiteElt = document.querySelector('#limite');
+const compteurElt = document.querySelector('#compteur');
 
 const CLE = 'capweb.historique';
 const historique = [];
@@ -32,6 +33,12 @@ function charger() {
   }
 }
 
+function updateCompteur() {
+  compteurElt.textContent = `${champ.value.length} / ${LIMITE}`;
+}
+
+champ.addEventListener('input', updateCompteur);
+
 formulaire.addEventListener('submit', (event) => {
   event.preventDefault();
   const controle = validateMessage(champ.value);
@@ -45,6 +52,7 @@ formulaire.addEventListener('submit', (event) => {
   sauvegarder();
   renderMessages(historique, liste);
   champ.value = '';
+  updateCompteur();
   statut.textContent = '';
   champ.focus();
 });
@@ -62,6 +70,7 @@ effacer.addEventListener('click', () => {
 // La limite vient de brain.js : un seul endroit à modifier.
 champ.maxLength = LIMITE;
 limiteElt.textContent = String(LIMITE);
+updateCompteur();
 
 charger();
 renderMessages(historique, liste);
