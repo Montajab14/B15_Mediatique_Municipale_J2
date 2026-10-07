@@ -54,3 +54,12 @@ export function replyTo(message) {
   // Message inconnu : on rappelle ce que Cap Web sait faire.
   return REPONSES.inconnu;
 }
+
+// Compte les mots d'un message : les espaces, tabulations et retours à la ligne séparent les mots.
+export function compterMots(message) {
+  if (typeof message !== 'string') {
+    return 0;
+  }
+  const mots = message.trim().split(/\s+/).filter((mot) => mot !== '');
+  return mots.length;
+}
