@@ -75,6 +75,27 @@ updateCompteur();
 charger();
 renderMessages(historique, liste);
 
+async function afficherVersion() {
+  try {
+    const reponse = await fetch('/version.json', { headers: { accept: 'application/json' } });
+    if (!reponse.ok) {
+      throw new Error('Réponse serveur non ok');
+    }
+    const donnees = await reponse.json();
+    if (donnees && typeof donnees.version === 'string' && versionElt) {
+      versionElt.textContent = `version ${donnees.version}`;
+    } else if (versionElt) {
+      versionElt.textContent = 'version indisponible';
+    }
+  } catch {
+    if (versionElt) {
+      versionElt.textContent = 'version indisponible';
+    }
+  }
+}
+
+afficherVersion();
+
 fetch('/version.json', { headers: { accept: 'application/json' } })
   .then((reponse) => (reponse.ok ? reponse.json() : null))
   .then((donnees) => {
@@ -82,4 +103,4 @@ fetch('/version.json', { headers: { accept: 'application/json' } })
       versionElt.textContent = `version ${donnees.version}`;
     }
   })
-  .catch(() => {});
+  .catch(() => { });
