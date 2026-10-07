@@ -116,3 +116,11 @@ button:hover {
 footer {
   font-size: 0.9rem;
 }
+
+/* Étape 4 : Version mobile */
+@media (max-width: 600px) {
+  form button[type="submit"] {
+    width: 100%;
+    align-self: stretch;
+  }
+}
