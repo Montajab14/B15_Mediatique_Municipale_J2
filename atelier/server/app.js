@@ -50,6 +50,20 @@ export function createApp({ publicDir, version = 'dev' } = {}) {
       res.end('Non trouvé');
       return;
     }
+    const CONSEILS = [
+      'Prenez le temps de bien vérifier votre code avant de valider.',
+      'Testez régulièrement vos fonctions avec des cas d\'erreur.',
+      'Un code clair est plus facile à maintenir.'
+    ];
+
+    if (chemin === '/api/conseil') {
+      const conseil = CONSEILS[Math.floor(Math.random() * CONSEILS.length)];
+      const corps = JSON.stringify({ conseil });
+      res.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'content-length': Buffer.byteLength(corps) });
+      res.end(methode === 'HEAD' ? '' : corps);
+      return;
+    }
+
     // Métadonnée de version fournie au démarrage.
     if (chemin === '/version.json') {
       const corps = JSON.stringify({ version });
