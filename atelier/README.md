@@ -1,36 +1,90 @@
 # Cap Web
 
 ## 1. À quoi sert Cap Web
-Cap Web est un assistant conversationnel web basé sur un système de règles déterministes.
-Il permet de valider les saisies des utilisateurs, de répondre à des commandes et mots-clés précis, et de conserver l'historique des échanges localement.
-Il fonctionne entièrement côté client avec des fonctions pures et un affichage sécurisé.
 
-## 2. Comment l'installer et le lancer
+Cap Web est un assistant conversationnel à règles, créé par notre binôme pendant le module « Renforcement Dev Web ». On lui écrit un message, il répond selon des règles simples, sans intelligence artificielle : salutations, aide, mots du binôme (dont « bibliotheque », pour notre thème de la médiathèque municipale) et conseils envoyés par le serveur.
 
-Dans le dossier `atelier` :
+La page vérifie chaque message (vide, trop long) avant de répondre, affiche toujours le texte comme du texte (jamais comme du HTML), compte les caractères pendant la frappe et garde la conversation après un rechargement.
 
-1. Installer les dépendances du projet :
-   ```bash
-   npm install
-   ```
-2. Lancer l'application en mode développement :
-   ```bash
-   npm start
-   ```
-   L'application est ensuite accessible dans le navigateur à l'adresse : http://127.0.0.1:3000
+## 2. Installer, lancer et tester
 
-3. Exécuter la suite de tests pour vérifier le bon fonctionnement :
-   ```bash
-   npm test
-   ```
+Il faut **Node.js 24.20 ou plus récent** (`node --version` pour vérifier) et Git.
 
-## 3. Rôle des 3 modules de `public/js`
+Récupérer le projet, puis entrer dans le dossier `atelier` :
 
-* **`brain.js`** : Le moteur logique (« cerveau ») de l'assistant. Il contient les fonctions pures `validateMessage` (validation du texte et contrôle de la limite) et `replyTo` (détermination des réponses selon les règles et mots-clés). Il ne réalise aucun accès à la page ni au DOM.
-* **`view.js`** : Le module d'affichage de la conversation. Il fournit la fonction `renderMessages` responsable de générer les éléments de liste (`<li>`) et de mettre à jour le conteneur HTML en utilisant exclusivement du texte brut (`textContent`) pour prévenir l'injection HTML.
-* **`app.js`** : Le script principal de câblage. Il écoute les événements du formulaire et des boutons, gère la persistance de la conversation dans `localStorage`, et fait le lien entre la logique métier (`brain.js`) et la vue (`view.js`).
+```powershell
+git clone https://github.com/Montajab14/B15_Mediatique_Municipale_J2.git
+cd B15_Mediatique_Municipale_J2\atelier
+```
 
-## 4. Arborescence du projet
+Installer les outils, exactement dans les versions du projet :
+
+```powershell
+npm ci
+```
+
+`npm ci` annonce une vulnérabilité : c'est connu, ne lancez pas `npm audit fix`.
+
+Lancer Cap Web, puis ouvrir http://127.0.0.1:3000 dans le navigateur (Ctrl+C arrête le serveur) :
+
+```powershell
+npm start
+```
+
+Si le port 3000 est déjà pris : `$env:PORT=3001`, puis `npm start`, et ouvrir http://127.0.0.1:3001.
+
+Tester, dans un second terminal ouvert dans `atelier` :
+
+```powershell
+npm test
+npm run lint
+```
+
+`npm test` doit afficher `fail 0`, et `npm run lint` ne doit rien signaler.
+
+Facultatif, les tests dans un vrai navigateur (environ 150 Mo à télécharger la première fois) :
+
+```powershell
+npx playwright install chromium
+npm run test:browser
+```
+
+## 3. Utiliser Cap Web
+
+| Vous écrivez | Cap Web répond |
+|---|---|
+| `salut` ou `bonjour` | une salutation |
+| `aide` | la liste des mots qu'il connaît, avec leur nombre |
+| `test` | une confirmation que ses règles fonctionnent |
+| `prairie`, `voisin`, `bibliotheque` | la phrase propre à chacun de nos mots |
+| `conseil` | un conseil tiré au hasard par le serveur |
+| autre chose | un message de repli qui renvoie vers « aide » |
+
+Les majuscules et les espaces autour du message ne comptent pas. Un message vide, ou plus long que notre limite de 330 caractères, est refusé avec une erreur visible.
+
+## 4. La route `/api/conseil`
+
+Le serveur expose une route qui renvoie un conseil en JSON, tiré au hasard parmi trois :
+
+```text
+GET http://127.0.0.1:3000/api/conseil
+```
+
+Réponse (statut 200, en-tête `content-type: application/json; charset=utf-8`) :
+
+```json
+{ "conseil": "Un code clair est plus facile à maintenir." }
+```
+
+Dans la page, le message `conseil` appelle cette route avec `fetch` (fonction `demanderConseil` de `public/js/app.js`). Si le serveur ne répond pas, Cap Web affiche « Le serveur ne répond pas : conseil indisponible. » au lieu de planter. La route est vérifiée par `tests/conseil.test.js`.
+
+## 5. Les trois modules de `public/js`
+
+* **`brain.js`** : le cerveau. Des fonctions pures, sans aucun accès à la page : `validateMessage` (texte, vide, limite), `replyTo` (la réponse selon les règles et les mots du binôme) et `compterMots`.
+* **`view.js`** : l'affichage. `renderMessages` crée une ligne par message et écrit le texte avec `textContent`, jamais avec `innerHTML`.
+* **`app.js`** : le câblage. Il écoute le formulaire et les boutons, tient l'historique (enregistré dans `localStorage` sous `capweb.historique`), met à jour le compteur, affiche la version et demande les conseils au serveur.
+
+## 6. Arborescence du projet
 
 ```text
 atelier/
