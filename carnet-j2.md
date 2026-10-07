@@ -87,3 +87,10 @@ Pour aller plus loin : j'ai corrigé le patch 2 dans mon-patch.patch. Il garde �
 ## Fin de journée
 
 Chacun, une phrase : ce que vous savez faire ce soir et que vous ne saviez pas faire ce matin. Relisez votre positionnement : une notion est-elle passée de « à renforcer » à « à l'aise » ?
+
+## Étape 3 – L'accessibilité avec Lighthouse
+
+| Analyse Lighthouse | Score | Détails / Remarques |
+|---|---|---|
+| Analyse complète (avec <label>) | 100% | Performance : 100, Accessibilité : 100, Best Practices : 100, SEO : 100 |
+| Test sans la balise <label> | 82% | Alerte : "Form elements do not have associated labels" (les éléments de formulaire n'ont pas de libellé associé). |
