@@ -55,7 +55,6 @@ export function replyTo(message) {
   return REPONSES.inconnu;
 }
 
-// Compte les mots d'un message : les espaces, tabulations et retours à la ligne séparent les mots.
 export function compterMots(message) {
   if (typeof message !== 'string') {
     return 0;

@@ -2,8 +2,6 @@ import { it } from 'node:test';
 import assert from 'node:assert/strict';
 import { compterMots } from '../public/js/brain.js';
 
-// Critères C1 à C5 de la fiche R3, fonction F2 : compterMots(message) compte les mots.
-
 it('C1 : compte les mots séparés par un espace', () => {
   assert.equal(compterMots('salut'), 1);
   assert.equal(compterMots('où est le refuge'), 4);

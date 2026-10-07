@@ -39,7 +39,6 @@ function updateCompteur() {
 
 champ.addEventListener('input', updateCompteur);
 
-// Étape 7 : demande un conseil à la route /api/conseil du serveur.
 async function demanderConseil() {
   try {
     const reponse = await fetch('/api/conseil', { headers: { accept: 'application/json' } });
