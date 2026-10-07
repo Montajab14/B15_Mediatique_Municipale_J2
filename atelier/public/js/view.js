@@ -6,9 +6,6 @@ export function renderMessages(messages, container) {
     nom.textContent = msg.role === 'user' ? 'Vous' : 'Cap Web';
     const li = document.createElement('li');
     li.append(nom, ` : ${msg.text}`);
-    // const strong = document.createElement('strong');
-    // strong.textContent = msg.role === 'user' ? 'Vous' : 'Cap Web';
-    // li.append(strong, ` : ${msg.text}`);
     if (msg.role === 'assistant') {
       li.classList.add('bot');
     }

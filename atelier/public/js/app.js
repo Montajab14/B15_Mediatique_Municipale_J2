@@ -95,12 +95,3 @@ async function afficherVersion() {
 }
 
 afficherVersion();
-
-fetch('/version.json', { headers: { accept: 'application/json' } })
-  .then((reponse) => (reponse.ok ? reponse.json() : null))
-  .then((donnees) => {
-    if (donnees && typeof donnees.version === 'string' && versionElt) {
-      versionElt.textContent = `version ${donnees.version}`;
-    }
-  })
-  .catch(() => { });
