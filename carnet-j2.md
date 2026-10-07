@@ -33,6 +33,8 @@ Les tests rouges du départ, et ce que vous en avez fait :
 | `répond à une phrase inconnue par un repli distinct` | `replyTo` renvoyait la même réponse que `aide` au lieu d'avoir son propre message de repli. | `public/js/brain.js` | `fix: réponse de repli distincte pour les phrases inconnues` |
 | `view.js affiche du texte et ne décide pas des réponses` | `renderMessages` utilisait `innerHTML` au lieu de `textContent` pour insérer le texte. | `public/js/view.js` | `fix: affichage sécurisé avec textContent sans innerHTML` |
 
+Vérification de l'historique : ces cinq corrections sont toutes dans un seul commit, `9dbefa4`, dont le message « fix: <ce qui est corrigé> » est resté celui de l'exemple de la fiche. Les messages du tableau décrivent chaque correction ; ils ne correspondent pas à des commits séparés.
+
 Avec l'agent : ce qu'il a proposé et que vous avez refusé, et pourquoi.
 L'agent avait initialement proposé de contourner le problème en modifiant temporairement les tests pour les faire passer, ce qui a été refusé car le contrat de tests ne doit pas être altéré.
 
@@ -56,10 +58,10 @@ Pour aller plus loin, avec l'agent, les demandes du formateur :
 |---|---|
 | Fonction tirée | compterMots |
 | Le rouge vu (message exact) | The requested module '../public/js/brain.js' does not provide an export named 'compterMots' |
-| Identifiant du commit `test:` | test: compterMots, critères C1 à C5 |
-| Identifiant du commit `feat:` |  feat: compterMots  |
+| Identifiant du commit `test:` | `aaa7962` test: compterMots, critères C1 à C5 |
+| Identifiant du commit `feat:` | `0d9b09e` feat: compterMots |
 | Casse volontaire : la ligne changée | return mots.length; remplacé par return 1; |
-| Casse volontaire : le test devenu rouge | C1 : compte les mots séparés par un espace |
+| Casse volontaire : le test devenu rouge | C1 : compte les mots séparés par un espace (attendu 4, obtenu 1) ; C2 et C4 rougissent aussi, C3 reste vert |
 | Pour aller plus loin : la deuxième fonction | |
 
 Les critères C1 à C5 de votre fonction, recopiés de la fiche :
@@ -94,3 +96,15 @@ Chacun, une phrase : ce que vous savez faire ce soir et que vous ne saviez pas f
 |---|---|---|
 | Analyse complète (avec <label>) | 100% | Performance : 100, Accessibilité : 100, Best Practices : 100, SEO : 100 |
 | Test sans la balise <label> | 82% | Alerte : "Form elements do not have associated labels" (les éléments de formulaire n'ont pas de libellé associé). |
+
+## J3 · Terminer Cap Web
+
+| Étape | Ce qui a été fait et vérifié | Commit |
+|---|---|---|
+| 1 · Le troisième mot | Mot « bibliotheque » ajouté (`7198782`). La prédiction n'a pas été notée avant le code. Constat ensuite : « aide » annonçait encore « deux mots », car le nombre était écrit à la main ; il est maintenant calculé avec `Object.keys(MOTS).length` et « aide » annonce 3 mots. | `ff8f635` |
+| 5 · Plan B | L'ancien `fetch` avec `.then` était resté sous `afficherVersion()` : il est retiré, avec le code commenté laissé dans `view.js`. | `8591754` |
+| R3 (rattrapage J2) | Le test puis le code de `compterMots` n'avaient pas été commités : test seul vu rouge, puis code vert (50 tests sur 50). | `aaa7962`, `0d9b09e` |
+| 7 · Cap Web donne un conseil | « conseil » (en majuscules ou avec des espaces aussi) affiche un conseil du serveur. Serveur arrêté, page ouverte : « Le serveur ne répond pas : conseil indisponible. », sans écran blanc ni erreur dans la console. | `48cefe4` |
+| 11 · Les quatre attaques | 1. Serveur arrêté puis « conseil » : message clair. 2. 331 caractères (après retrait de `maxlength` dans F12) : refusé, « Le message doit contenir 330 caractères au maximum. ». 3. `<b>test</b>` s'affiche tel quel, chevrons compris. 4. À 375 px, aucun défilement horizontal, bouton Envoyer sur toute la largeur. | aucune correction nécessaire |
+| 11 · README | Arborescence commentée, puis README final : installer, lancer, tester, utiliser, route `/api/conseil`. Ses commandes ont été essayées dans un clone neuf : `npm ci`, `npm test` (50 sur 50), `npm run lint`, la page et `/api/conseil` répondent. | `6201880`, `c83dde6` |
+| 12 · Bilan | Bilan du binôme dans `atelier/bilan/bilan.md`. | ce commit |
