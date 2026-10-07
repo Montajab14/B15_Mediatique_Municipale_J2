@@ -14,7 +14,7 @@ const liste = Object.keys(MOTS).map((mot) => `« ${mot} »`).join(' et ');
 
 const REPONSES = {
   salut: 'Bonjour ! Je suis Cap Web, un assistant à règles. Écrivez « aide » pour voir ce que je sais faire.',
-  aide: `Je connais « salut », « aide », « test », et deux mots à moi : ${liste}.`,
+  aide: `Je connais « salut », « aide », « test », et ${Object.keys(MOTS).length} mots à moi : ${liste}.`,
   test: 'Test bien reçu : mes règles fonctionnent.',
   inconnu: 'Je ne comprends pas cette demande. Écrivez « aide » pour voir ce que je sais faire.'
 };
