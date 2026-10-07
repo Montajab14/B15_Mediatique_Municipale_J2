@@ -39,7 +39,24 @@ function updateCompteur() {
 
 champ.addEventListener('input', updateCompteur);
 
-formulaire.addEventListener('submit', (event) => {
+// Étape 7 : demande un conseil à la route /api/conseil du serveur.
+async function demanderConseil() {
+  try {
+    const reponse = await fetch('/api/conseil', { headers: { accept: 'application/json' } });
+    if (!reponse.ok) {
+      throw new Error(`Réponse serveur ${reponse.status}`);
+    }
+    const donnees = await reponse.json();
+    if (typeof donnees.conseil !== 'string') {
+      throw new Error('Conseil absent de la réponse');
+    }
+    return donnees.conseil;
+  } catch {
+    return 'Le serveur ne répond pas : conseil indisponible.';
+  }
+}
+
+formulaire.addEventListener('submit', async (event) => {
   event.preventDefault();
   const controle = validateMessage(champ.value);
   if (!controle.ok) {
@@ -47,8 +64,11 @@ formulaire.addEventListener('submit', (event) => {
     champ.focus();
     return;
   }
+  const reponse = controle.value.toLowerCase() === 'conseil'
+    ? await demanderConseil()
+    : replyTo(controle.value);
   historique.push({ role: 'user', text: controle.value });
-  historique.push({ role: 'assistant', text: replyTo(controle.value) });
+  historique.push({ role: 'assistant', text: reponse });
   sauvegarder();
   renderMessages(historique, liste);
   champ.value = '';
